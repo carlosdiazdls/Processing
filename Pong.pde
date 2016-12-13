@@ -26,12 +26,13 @@ void draw() {
     velxpelota=velxpelota*(-1);
   }
   //Rebote Y paredes
-  if (posypelota<0+15 || posypelota>height-15) {
+  if (posypelota<0+15) {
     velypelota=velypelota*(-1);
   }
   //Rebote Paleta
   if (difposx<=45 && difposx>=(-45) && posypelota>=450) {
     velypelota=velypelota*(-1);
   }
-
+if (posypelota>=height){
+exit();
 }

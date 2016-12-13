@@ -36,3 +36,4 @@ void draw() {
 if (posypelota>=height){
 exit();
 }
+}

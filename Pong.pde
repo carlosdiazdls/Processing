@@ -11,7 +11,7 @@ int velxpaleta=10;
 float difposx;
 
 int pantalla=0;
-
+int vida=2;
 void setup() {
   size(500, 500);
 }
@@ -31,7 +31,7 @@ void draw() {
 }
 
 void basejuego () { //creación de la pantalla
-  background(255, 0, 0);  
+  background(255);  
 }
 void paleta(){ //movimiento y dibujo de la paleta
  rect(posxpaleta, posypaleta, 90, 30);
@@ -59,27 +59,29 @@ void rebote () { // rebote de la pelota con las paredes y la paleta
     velypelota=velypelota*(-1);
   }
 }
-
-void muerte() { //final del juego
-  if (posypelota>=height) {
-    pantalla =2;
-    posxpelota=100;
-    posypelota=100;
+void Perdervida(){
+  if (posypelota>=height){
+    vida=vida-1;
+    posxpelota=250;
+    posypelota=250;
+    velypelota=velypelota*(-1);
+  }
+  if (vida==0){
+    pantalla=2;
   }
 }
-
 void pantallainicial() {
   background(0);
   fill(0, 200, 100);
   textSize(15);
-  text("PLAY (espacio)", 0, height/2);
+  text("PLAY (espacio)", width/2, height/2);
 }
 void pantallajuego() {
   basejuego(); 
   pelota();
   paleta();
   rebote();
-  muerte();
+  Perdervida();
 }
 void pantallafinal() {
   background(0);
@@ -91,6 +93,7 @@ void pantallafinal() {
 void keyPressed () {
   if (key=='e') {
     pantalla=0;
+    vida=2;
   }
   if (key=='s') {
     exit();

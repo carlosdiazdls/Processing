@@ -17,7 +17,7 @@ int puntos=0;
 void setup() {
   size(500, 500);
   for (int i=0; i< 5; i++) {
-    miBloque[i]= new Bloque((width/miBloque.length*i)+width/10, height/5);
+    miBloque[i]= new Bloque((width/miBloque.length*i)+width/10, height/5,1);
   }
 }
 
@@ -104,32 +104,34 @@ void pantallafinal() {
 
 void iniciarBloques() {
   for (int i=0; i< 5; i++) {
-    miBloque[i].display();
+    miBloque[i].dibujar();
+    miBloque[i].desaparecer();
+
   }
 }
 
 class Bloque {
-  // DATOS 
-  float bloquePosX;  // posicion x del bloque
-  float bloquePosY;  // posicion y del bloque
-  float anchoBloque; // ancho del bloque
-  float altoBloque; // alto del bloque
-  float r;
-  float g;
-  float b;
 
-  // CONSTRUCTOR
-  Bloque(float xPosTemp, float yPosTemp) {
-    bloquePosX=xPosTemp;
-    bloquePosY=yPosTemp;
-    anchoBloque=15;
-    altoBloque=30;
+  int x, y, z, anchura, altura;
+
+  Bloque (int posX, int posY, int estado) {  //constructor
+    x=posX;
+    y=posY;
+    z=estado;
+    anchura=50;
+    altura=10;
   }
-  void display(){
-   fill(r-50 ,g-50 ,b-50);
-    stroke(0, 255, 0 );
-    strokeWeight(2);
-     rect(bloquePosX, bloquePosY, altoBloque, anchoBloque);
+  void dibujar() {
+    if (z==1) {
+      rect(x, y, anchura, altura);
+    }
+  }
+  void desaparecer() {
+    if (posxpelota>x-anchura/2-15 && posxpelota<x+anchura/2+15 && posypelota>y-altura/2-15 && posypelota<y+altura/2+15 && z==1) {
+      z=0;
+      velypelota= velypelota*(-1);
+      puntos++;
+    }
   }
 }
 void keyPressed () {

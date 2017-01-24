@@ -1,13 +1,20 @@
 Bloque[] miBloque = new Bloque[5]; 
-float posxpelota=100;
-float posypelota=100;
+float posxpelota=200;
+float posypelota=200;
 
 float velxpelota=5;
 float velypelota=2;
 
+float velXmax=5;
+float velYmax=5;
+float velYmin=2;
+float aumentoVelocidad=0.2;
+
+
+
 int posxpaleta=mouseX;
 int posypaleta=450;
-
+int radio=15;
 int velxpaleta=10;
 float difposx;
 
@@ -17,7 +24,7 @@ int puntos=0;
 void setup() {
   size(500, 500);
   for (int i=0; i< 5; i++) {
-    miBloque[i]= new Bloque((width/miBloque.length*i)+width/10, height/5,1);
+    miBloque[i]= new Bloque((width/miBloque.length*i)+width/15, height/5,1);
   }
 }
 
@@ -50,25 +57,40 @@ void paleta() { //movimiento y dibujo de la paleta
 
 
 void pelota () { //movimiento y dibujo de pelota
-  ellipse(posxpelota, posypelota, 30, 30);
+  ellipse(posxpelota, posypelota, radio*2, radio*2);
   posxpelota=posxpelota+velxpelota;
   posypelota=posypelota+velypelota;
 }
 
 void rebote () { // rebote de la pelota con las paredes y la paleta
-  if (posxpelota>=width-15 || posxpelota<=0+15) {
+   if ( difposx<=90/2+radio && difposx>=-(90/2+radio) && posypelota>=height*9/10-radio && posypelota<=height*9/10+radio) { 
+    rebotepaleta();
+}
+  if (posxpelota>=width-radio || posxpelota<=0+radio) {
     velxpelota=velxpelota*(-1);
   }
   //Rebote Y paredes
-  if (posypelota<=0+15) {
+  if (posypelota<=0+radio) {
     velypelota=velypelota*(-1);
-  }
-  //Rebote Paleta
-  if (difposx<=45 && difposx>=(-45) && posypelota>=450-14) {
-    velypelota=velypelota*(-1);
-    puntos=puntos +1;
   }
 }
+ void rebotepaleta(){
+  //Rebote Paleta
+
+   velXmax=velXmax+aumentoVelocidad;
+  velYmin=velYmin+aumentoVelocidad;
+  velYmax=sqrt(sq(velXmax)+sq(velYmin));
+
+velxpelota= difposx*velXmax/(90/2+radio);
+ if (difposx <0) {
+    velypelota= -(-difposx*(velYmin-velYmax)/(90/2+radio)+velYmax);
+  } 
+  else {
+    velypelota= -(difposx*(velYmin-velYmax)/(90/2+radio)+velYmax);
+}
+}
+
+ 
 void Perdervida() {
   if (posypelota>=height) {
     vida=vida-1;
@@ -88,12 +110,15 @@ void pantallainicial() {
   text("PLAY (espacio)", width/2, height/2);
 }
 void pantallajuego() {
+ 
   basejuego(); 
   pelota();
   paleta();
   rebote();
   Perdervida();
   iniciarBloques();
+  
+  puntuacion();
 }
 void pantallafinal() {
   background(0);
@@ -134,10 +159,18 @@ class Bloque {
     }
   }
 }
+void puntuacion(){
+  if(puntos==5)
+  pantalla=2;
+ 
+}
+
 void keyPressed () {
   if (key=='e') {
     pantalla=0;
     vida=2;
+    puntos=0;
+    
   }
   if (key=='s') {
     exit();

@@ -1,4 +1,5 @@
 Bloque[] miBloque = new Bloque[5]; 
+Bloque[] mi2Bloque =new Bloque [5];
 float posxpelota=200;
 float posypelota=200;
 
@@ -23,9 +24,7 @@ int vida=2;
 int puntos=0;
 void setup() {
   size(500, 500);
-  for (int i=0; i< 5; i++) {
-    miBloque[i]= new Bloque((width/miBloque.length*i)+width/15, height/5,1);
-  }
+  dibujarBloque();
 }
 
 void draw() {
@@ -38,6 +37,9 @@ void draw() {
     break;
   case 2:
     pantallafinal();
+    break;
+  case 3:
+    win();
     break;
   }
 }
@@ -63,9 +65,9 @@ void pelota () { //movimiento y dibujo de pelota
 }
 
 void rebote () { // rebote de la pelota con las paredes y la paleta
-   if ( difposx<=90/2+radio && difposx>=-(90/2+radio) && posypelota>=height*9/10-radio && posypelota<=height*9/10+radio) { 
+  if ( difposx<=90/2+radio && difposx>=-(90/2+radio) && posypelota>=height*9/10-radio && posypelota<=height*9/10+radio) { 
     rebotepaleta();
-}
+  }
   if (posxpelota>=width-radio || posxpelota<=0+radio) {
     velxpelota=velxpelota*(-1);
   }
@@ -74,23 +76,22 @@ void rebote () { // rebote de la pelota con las paredes y la paleta
     velypelota=velypelota*(-1);
   }
 }
- void rebotepaleta(){
+void rebotepaleta() {
   //Rebote Paleta
 
-   velXmax=velXmax+aumentoVelocidad;
+  velXmax=velXmax+aumentoVelocidad;
   velYmin=velYmin+aumentoVelocidad;
   velYmax=sqrt(sq(velXmax)+sq(velYmin));
 
-velxpelota= difposx*velXmax/(90/2+radio);
- if (difposx <0) {
+  velxpelota= difposx*velXmax/(90/2+radio);
+  if (difposx <0) {
     velypelota= -(-difposx*(velYmin-velYmax)/(90/2+radio)+velYmax);
-  } 
-  else {
+  } else {
     velypelota= -(difposx*(velYmin-velYmax)/(90/2+radio)+velYmax);
-}
+  }
 }
 
- 
+
 void Perdervida() {
   if (posypelota>=height) {
     vida=vida-1;
@@ -110,14 +111,14 @@ void pantallainicial() {
   text("PLAY (espacio)", width/2, height/2);
 }
 void pantallajuego() {
- 
+
   basejuego(); 
   pelota();
   paleta();
   rebote();
   Perdervida();
   iniciarBloques();
-  
+
   puntuacion();
 }
 void pantallafinal() {
@@ -129,12 +130,27 @@ void pantallafinal() {
 
 void iniciarBloques() {
   for (int i=0; i< 5; i++) {
+
+
     miBloque[i].dibujar();
     miBloque[i].desaparecer();
+  }
 
+  for (int h=0; h< 5; h++) {
+
+    mi2Bloque[h].dibujar();
+    mi2Bloque[h].desaparecer();
   }
 }
+void dibujarBloque() {
+  for (int i=0; i< 5; i++) {
+    miBloque[i]= new Bloque(((width/miBloque.length*i)+25), height/5, 1);
+  }
+  for (int h=0; h< 5; h++) {
 
+    mi2Bloque[h]= new Bloque(((width/mi2Bloque.length*h)+25), height/10, 1);
+  }
+}
 class Bloque {
 
   int x, y, z, anchura, altura;
@@ -159,10 +175,9 @@ class Bloque {
     }
   }
 }
-void puntuacion(){
-  if(puntos==5)
-  pantalla=2;
- 
+void puntuacion() {
+  if (puntos==2)
+    pantalla=3;
 }
 
 void keyPressed () {
@@ -170,7 +185,7 @@ void keyPressed () {
     pantalla=0;
     vida=2;
     puntos=0;
-    
+    dibujarBloque();
   }
   if (key=='s') {
     exit();
@@ -178,4 +193,21 @@ void keyPressed () {
   if (key==' ') {
     pantalla= pantalla+1;
   }
+}
+void win() {
+    textSize(25);
+  fill(0,200,100);
+  text("e para empezar de nuevo y s para salir", 10, height/2);
+
+  float R, G, B;
+  background(0);
+   R=random (0, 255);
+  G=random(0, 255);
+  B=random (0, 255);
+    fill(R, G, B);
+  textSize(25);
+
+
+text(" HAS GANADO. ¡FELICIDADES!", 60, height/4);
+
 }

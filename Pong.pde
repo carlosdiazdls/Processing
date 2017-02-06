@@ -1,27 +1,31 @@
+//Carlos Diaz de los Santos
+// Trabajo de Pong con Processing
+// Modelo 1.0 a 2/06/2017
+//Programacion y Computacion
+
 Bloque[] miBloque = new Bloque[5]; 
 Bloque[] mi2Bloque =new Bloque [5];
+
+//variable pelota y paleta
 float posxpelota=200;
 float posypelota=200;
-
 float velxpelota=5;
 float velypelota=2;
-
 float velXmax=5;
 float velYmax=5;
 float velYmin=2;
 float aumentoVelocidad=0.2;
-
-
-
 int posxpaleta=mouseX;
 int posypaleta=450;
 int radio=15;
 int velxpaleta=10;
 float difposx;
 
+//variables juego
 int pantalla=0;
 int vida=2;
 int puntos=0;
+
 void setup() {
   size(500, 500);
   dibujarBloque();
@@ -110,17 +114,17 @@ void pantallainicial() {
   textSize(15);
   text("PLAY (espacio)", width/2, height/2);
 }
-void pantallajuego() {
 
+void pantallajuego() {
   basejuego(); 
   pelota();
   paleta();
   rebote();
   Perdervida();
   iniciarBloques();
-
   puntuacion();
 }
+
 void pantallafinal() {
   background(0);
   fill(0, 200, 100);
@@ -198,7 +202,6 @@ void win() {
     textSize(25);
   fill(0,200,100);
   text("e para empezar de nuevo y s para salir", 10, height/2);
-
   float R, G, B;
   background(0);
    R=random (0, 255);
@@ -206,8 +209,5 @@ void win() {
   B=random (0, 255);
     fill(R, G, B);
   textSize(25);
-
-
 text(" HAS GANADO. ¡FELICIDADES!", 60, height/4);
-
 }
